@@ -29,3 +29,43 @@ Now that the blog data is parsed, we need to add it to our index page (pages/ind
   1. Static Generation without data: Using `getStaticProps`
   2. Static Generation with data
 - Server-side Rendering is the pre-rendering method that generates the HTML on each request.
+
+## Dynamic routes for post pages
+
+- Implement `getStaticPaths` in `posts/[id].js`
+- Implement `getStaticProps` in `posts/[id].js`
+
+## Remder Markdown
+
+```zsh
+npm i remark remark-html
+```
+
+Update `libs/posts.js`
+
+```js
+export async function getPostData(id) {
+  const fullPath = path.join(postsDir, `${id}.md`);
+  const fileContents = fs.readFileSync(fullPath, "utf8");
+
+  // Use gray-matter to parse the post metadata section
+  const matterResult = matter(fileContents);
+
+  // Use remark to convert markdown into HTML string
+  const processedContent = await remark()
+    .use(html)
+    .process(matterResult.content);
+  const contentHtml = processedContent.toString();
+
+  // Combine the data with the id
+  return {
+    id,
+    contentHtml,
+    ...matterResult.data,
+  };
+}
+```
+
+## Catch-all Routes
+
+## Search posts

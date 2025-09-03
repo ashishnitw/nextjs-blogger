@@ -29,7 +29,7 @@ export default function Home({ allPostsData }) {
         </p>
       </section>
 
-      {/* Blog List */}
+      {/* Posts List */}
       <section className="mt-14 space-y-8">
         {allPostsData.map(({ id, date, title }) => (
           <article key={id} className="group">
